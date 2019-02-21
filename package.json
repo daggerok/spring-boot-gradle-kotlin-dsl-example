@@ -1,0 +1,21 @@
+{
+  "name": "docs",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "`Spring Boot Gradle Kotlin DSL",
+  "main": "index.js",
+  "scripts": {
+    "start": "vuepress dev",
+    "build": "cross-env BASE_HREF='/spring-boot-gradle-kotlin-dsl-example/' vuepress build"
+  },
+  "keywords": [
+    "vuepress",
+    "spring-boot",
+    "gradle-kotlin-dsl"
+  ],
+  "author": "Maksim Kostromin <daggerok@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "5.2.0",
+    "vuepress": "0.14.9"
+  }
+}
