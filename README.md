@@ -278,3 +278,4 @@ docker ps -a -f name=spring-boot-gradle-kotlin-dsl-example
 
 - [from groovy to kotlin DSL gradle migration guide (nice but little bit old)](https://github.com/jnizet/gradle-kotlin-dsl-migration-guide)
 - [bmuschko docker plugins](https://bmuschko.github.io/gradle-docker-plugin/)
+- [gradle docker-compose plugin](https://github.com/avast/gradle-docker-compose-plugin)
