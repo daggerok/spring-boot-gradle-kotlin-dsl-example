@@ -1,4 +1,5 @@
-const base = !process.env.BASE_HREF ? '/' : process.env.BASE_HREF;
+const baseHref = process.env.BASE_HREF;
+const base = !baseHref ? '/' : baseHref;
 
 module.exports = {
   head: [
@@ -7,11 +8,6 @@ module.exports = {
   base,
   themeConfig: {
     repo: 'daggerok/spring-boot-gradle-kotlin-dsl-example',
-    lastUpdated: 'Last Updated', // string | boolean
-    '/': {
-      sidebar: 'auto'
-    },
-    sidebarDepth: 2,
-    navbar: true,
+    lastUpdated: 'Updated at',
   }
 };
