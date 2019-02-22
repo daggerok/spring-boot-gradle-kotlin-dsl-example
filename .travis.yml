@@ -24,8 +24,8 @@ script:
   - ./gradlew
   - bash ./build/libs/*.war &
   - wait_for 8080
-  - http :8080/actuator/ | jq
-  - http :8080/actuator/health | jq
+  - http :8080/actuator/ | jq '._links'
+  - http :8080/actuator/health | jq '.'
   - stop_any 80
 cache:
   npm: true
