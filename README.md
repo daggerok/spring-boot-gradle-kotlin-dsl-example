@@ -99,6 +99,23 @@ class ServletInitializer : SpringBootServletInitializer() {
 }
 ```
 
+## Wrapper
+
+_build.gradle.kts_
+
+```kotlin
+tasks.withType<Wrapper>().configureEach {
+  gradleVersion = gradleVersion
+  distributionType = Wrapper.DistributionType.BIN
+}
+```
+
+_re-generate gradle wrapper_
+
+```bash
+./gradlew :wrapper
+```
+
 ## NodeJS
 
 _build.gradle.kts_
