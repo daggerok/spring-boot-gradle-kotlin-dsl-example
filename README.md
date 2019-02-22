@@ -270,7 +270,6 @@ dockerCompose {
 _run and test_
 
 ```bash
-docker ps -a -f name=spring-boot-gradle-kotlin-dsl-example
 ./gradlew busybox
 ```
 
