@@ -43,6 +43,36 @@ pluginManagement {
 }
 ```
 
+### dependencies
+
+_build.gradle.kts_
+
+```kotlin
+dependencies {
+  implementation("org.springframework.boot:spring-boot-starter-hateoas")
+  implementation("org.springframework.boot:spring-boot-starter-webflux")
+  implementation("org.springframework.boot:spring-boot-starter-actuator")
+  implementation("org.springframework.boot:spring-boot-starter")
+  annotationProcessor("org.projectlombok:lombok")
+  testAnnotationProcessor("org.projectlombok:lombok")
+  annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+  testAnnotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+  runtimeOnly("org.springframework.boot:spring-boot-devtools")
+  testImplementation("org.springframework.boot:spring-boot-starter-test")
+  testImplementation("io.projectreactor:reactor-test")
+}
+```
+
+### executable artifact
+
+_build.gradle.kts_
+
+```kotlin
+tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar>().configureEach {
+  launchScript()
+}
+```
+
 ### kotlin
 
 _build.gradle.kts_
@@ -53,6 +83,12 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
     freeCompilerArgs += "-Xjsr305=strict"
     jvmTarget = JavaVersion.VERSION_1_8.toString()
   }
+}
+
+dependencies {
+  implementation("org.jetbrains.kotlin:kotlin-reflect")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+  implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 }
 ```
 
@@ -95,6 +131,53 @@ _ServletInitializer.kt_
 class ServletInitializer : SpringBootServletInitializer() {
   override fun configure(application: SpringApplicationBuilder): SpringApplicationBuilder {
     return application.sources(SptingBootGradleKotlinDslExampleApplication::class.java)
+  }
+}
+```
+
+_build and run executable WAR artifact_
+
+```bash
+./gradlew build
+bash ./build/libs/*.war
+```
+
+## JUnit / Jupiter
+
+_build.gradle.kts_
+
+```kotlin
+dependencies {
+  testImplementation("junit:junit")
+  testAnnotationProcessor("org.projectlombok:lombok")
+  testImplementation(platform("org.junit:junit-bom:$junitJupiterVersion"))
+  testImplementation("org.junit.jupiter:junit-jupiter-api")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+  testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+  testRuntime("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.withType<Test> {
+  useJUnitPlatform()
+  testLogging {
+    showExceptions = true
+    showStandardStreams = true
+    events(PASSED, SKIPPED, FAILED)
+  }
+}
+```
+
+## java <-> kotlin
+
+_don't miss your `src/*/kotlin/**.java` and `src/*/java/**.kt` sources files location!_
+
+```kotlin
+sourceSets {
+  main {
+    java.srcDir("src/main/kotlin")
+  }
+  test {
+    java.srcDir("src/test/kotlin")
   }
 }
 ```
