@@ -14,6 +14,7 @@ addons:
       - curl
       - bash
       - python-py
+      - jq
 install: true
 before_install:
   - sudo pip install --upgrade httpie >/dev/null
@@ -23,8 +24,8 @@ script:
   - ./gradlew
   - bash ./build/libs/*.war &
   - wait_for 8080
-  - http :8080/actuator/
-  - http :8080/actuator/health
+  - http :8080/actuator/ | jq
+  - http :8080/actuator/health | jq
   - stop_any 80
 cache:
   npm: true
