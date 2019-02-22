@@ -136,6 +136,18 @@ tasks["start"].dependsOn("npm_start")
 tasks["build"].dependsOn("npm_run_build")
 ```
 
+_run 'npm start' by using gradle node plugin_
+
+```bash
+./gradlew start
+```
+
+_build VuePress documentation_
+
+```bash
+./gradlew npm_run_build
+```
+
 ## links and resources
 
 - [from groovy to kotlin DSL gradle migration guide (nice but little bit old)](https://github.com/jnizet/gradle-kotlin-dsl-migration-guide)
