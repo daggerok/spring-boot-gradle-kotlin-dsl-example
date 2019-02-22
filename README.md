@@ -43,6 +43,10 @@ pluginManagement {
 }
 ```
 
+::: tip
+we need this because we wanna use spring 2.2.0-BUILD-SNAPSHOT version
+:::
+
 ### dependencies
 
 _build.gradle.kts_
@@ -103,13 +107,6 @@ val junitJupiterVersion = "5.4.0"
 extra["kotlin.version"] = kotlinVersion
 extra["junit-jupiter.version"] = junitJupiterVersion
 ```
-
----
-**NOTE**
-
-we need this because we wanna use spring 2.2.0-BUILD-SNAPSHOT version
-
----
 
 ## war
 
