@@ -17,7 +17,7 @@ addons:
       - jq
 install: true
 before_install:
-  - sudo pip install --upgrade httpie >/dev/null
+  - sudo pip install --upgrade httpie >/dev/null 2>&1
   - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
   - stop_any 80
 script:
