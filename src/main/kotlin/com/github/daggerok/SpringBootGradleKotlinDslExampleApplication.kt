@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class SptingBootGradleKotlinDslExampleApplication
+class SpringBootGradleKotlinDslExampleApplication
 
 fun main(args: Array<String>) {
-  runApplication<SptingBootGradleKotlinDslExampleApplication>(*args)
+  runApplication<SpringBootGradleKotlinDslExampleApplication>(*args)
 }

@@ -8,7 +8,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = RANDOM_PORT,
-    classes = [SptingBootGradleKotlinDslExampleApplication::class])
+    classes = [SpringBootGradleKotlinDslExampleApplication::class])
 class `JUnit 5 ExtendWith Tests` {
 
   @Test fun `also testing context`() {}
