@@ -231,6 +231,50 @@ _build VuePress documentation_
 ./gradlew npm_run_build
 ```
 
+## docker
+
+_docker-compose.yaml_
+
+```yaml
+version: '3.7'
+services:
+  busybox:
+    image: busybox
+    command: "echo Hello"
+    healthcheck:
+      disable: true
+networks:
+  hello-net:
+    driver: bridge
+```
+
+_build.gradle.kts_
+
+```kotlin
+plugins {
+  id("com.avast.gradle.docker-compose").version("0.8.14")//.apply(false)
+}
+
+val busybox: Task = tasks.create<Exec>("busybox") {
+  executable = "docker"
+  args("ps", "-a", "-f", "name=spring-boot-gradle-kotlin-dsl-example")
+}
+
+apply(plugin = "com.avast.gradle.docker-compose")
+
+dockerCompose {
+  isRequiredBy(busybox)
+}
+```
+
+_run and test_
+
+```bash
+docker ps -a -f name=spring-boot-gradle-kotlin-dsl-example
+./gradlew busybox
+```
+
 ## links and resources
 
 - [from groovy to kotlin DSL gradle migration guide (nice but little bit old)](https://github.com/jnizet/gradle-kotlin-dsl-migration-guide)
+- [bmuschko docker plugins](https://bmuschko.github.io/gradle-docker-plugin/)

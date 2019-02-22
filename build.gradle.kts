@@ -10,6 +10,8 @@ plugins {
   id("org.jetbrains.kotlin.jvm") version "1.3.21"
   id("org.jetbrains.kotlin.plugin.spring") version "1.3.21"
   id("org.springframework.boot") version "2.2.0.BUILD-SNAPSHOT"
+  id("com.bmuschko.docker-remote-api").version("4.5.0").apply(false)
+  id("com.avast.gradle.docker-compose").version("0.8.14")//.apply(false)
 }
 
 group = "com.github.daggerok"
@@ -111,3 +113,14 @@ node {
 tasks.create("start")
 tasks["start"].dependsOn("npm_start")
 tasks["build"].dependsOn("npm_run_build")
+
+val busybox: Task = tasks.create<Exec>("busybox") {
+  executable = "docker"
+  args("ps", "-a", "-f", "name=spring-boot-gradle-kotlin-dsl-example")
+}
+
+apply(plugin = "com.avast.gradle.docker-compose")
+
+dockerCompose {
+  isRequiredBy(busybox)
+}
