@@ -1,8 +1,8 @@
 # spring-boot + gradle-kotlin-dsl
 
+- Travis CI status: [![Build Status](https://travis-ci.org/daggerok/spring-boot-gradle-kotlin-dsl-example.svg?branch=master)](https://travis-ci.org/daggerok/spring-boot-gradle-kotlin-dsl-example)
 - Documentation on [GitHub Pages](https://daggerok.github.io/spring-boot-gradle-kotlin-dsl-example/)
 - GitHub [daggerok/spring-boot-gradle-kotlin-dsl-example](https://github.com/daggerok/spring-boot-gradle-kotlin-dsl-example) repository 
-- Travis CI status: [![Build Status](https://travis-ci.org/daggerok/spring-boot-gradle-kotlin-dsl-example.svg?branch=master)](https://travis-ci.org/daggerok/spring-boot-gradle-kotlin-dsl-example)
 
 ## Spring Boot 
 
