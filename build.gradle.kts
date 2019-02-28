@@ -37,6 +37,7 @@ java {
   targetCompatibility = javaVersion
 }
 
+/*
 sourceSets {
   main {
     java.srcDir("src/main/kotlin")
@@ -45,6 +46,9 @@ sourceSets {
     java.srcDir("src/test/kotlin")
   }
 }
+*/
+the<SourceSetContainer>()["main"].java.srcDir("src/main/kotlin")
+the<SourceSetContainer>()["test"].java.srcDir("src/test/kotlin")
 
 tasks.withType<KotlinCompile>().configureEach {
   kotlinOptions {
