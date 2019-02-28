@@ -20,6 +20,7 @@ version = "1.0.0-SNAPSHOT"
 val gradleVersion = "5.2.1"
 val kotlinVersion = "1.3.21"
 val junitJupiterVersion = "5.4.0"
+val javaVersion = JavaVersion.VERSION_1_8
 
 extra["kotlin.version"] = kotlinVersion
 extra["junit-jupiter.version"] = junitJupiterVersion
@@ -32,8 +33,8 @@ tasks.withType<Wrapper>().configureEach {
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_1_8
+  sourceCompatibility = javaVersion
+  targetCompatibility = javaVersion
 }
 
 sourceSets {
@@ -48,7 +49,7 @@ sourceSets {
 tasks.withType<KotlinCompile>().configureEach {
   kotlinOptions {
     freeCompilerArgs += "-Xjsr305=strict"
-    jvmTarget = JavaVersion.VERSION_1_8.toString()
+    jvmTarget = "$javaVersion"
   }
 }
 
