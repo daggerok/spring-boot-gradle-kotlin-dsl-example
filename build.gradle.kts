@@ -32,7 +32,7 @@ tasks.withType<Wrapper>().configureEach {
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_1_8
+  sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 sourceSets {
