@@ -14,4 +14,4 @@ pluginManagement {
   }
 }
 
-rootProject.name = "spring-boot-gradle-kotlin-dsl-example"
+rootProject.name = "spring-boot-ldap-example"

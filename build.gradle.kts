@@ -130,3 +130,29 @@ apply(plugin = "com.avast.gradle.docker-compose")
 dockerCompose {
   isRequiredBy(busybox)
 }
+
+tasks {
+  getByName("clean") {
+    doLast {
+      delete(project.buildDir)
+    }
+  }
+}
+
+tasks.create<Zip>("sources") {
+  dependsOn("clean")
+  shouldRunAfter("clean")
+  description = "Archives sources in a zip file"
+  group = "Archive"
+  from("src") {
+    into("src")
+  }
+  from("build.gradle.kts")
+  from("settings.gradle.kts")
+  from(".vuepress") {
+    into(".vuepress")
+  }
+  from("README.md")
+  from("package.json")
+  archiveFileName.set("${project.buildDir}/sources-${project.version}.zip")
+}

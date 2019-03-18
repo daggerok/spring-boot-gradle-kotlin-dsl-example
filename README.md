@@ -274,6 +274,37 @@ _run and test_
 ./gradlew busybox
 ```
 
+## create sources.zip
+
+```kotlin
+
+tasks {
+  getByName("clean") {
+    doLast {
+      delete(project.buildDir)
+    }
+  }
+}
+
+tasks.create<Zip>("sources") {
+  dependsOn("clean")
+  shouldRunAfter("clean")
+  description = "Archives sources in a zip file"
+  group = "Archive"
+  from("src") {
+    into("src")
+  }
+  from("build.gradle.kts")
+  from("settings.gradle.kts")
+  from(".vuepress") {
+    into(".vuepress")
+  }
+  from("README.md")
+  from("package.json")
+  archiveFileName.set("${project.buildDir}/sources-${project.version}.zip")
+}
+```
+
 ## links and resources
 
 - [from groovy to kotlin DSL gradle migration guide (nice but little bit old)](https://github.com/jnizet/gradle-kotlin-dsl-migration-guide)
