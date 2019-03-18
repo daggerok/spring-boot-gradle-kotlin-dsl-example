@@ -118,7 +118,9 @@ node {
 
 tasks.create("start")
 tasks["start"].dependsOn("npm_start")
+tasks["npm_start"].dependsOn("npm_i")
 tasks["build"].dependsOn("npm_run_build")
+tasks["npm_run_build"].dependsOn("npm_install")
 
 val busybox: Task = tasks.create<Exec>("busybox") {
   executable = "docker"

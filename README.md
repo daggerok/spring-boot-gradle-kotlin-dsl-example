@@ -1,5 +1,22 @@
 # spring-boot + gradle-kotlin-dsl
 
+## Table of Content
+
+- [Spring Boot](#Spring-Boot)
+  - [plugins definition](#plugins-definition)
+  - [dependencies](#dependencies)
+  - [executable artifact](#executable-artifact)
+  - [kotlin](#kotlin)
+  - [override parent versions](#override-parent-versions)
+  - [war](#war)
+- [JUnit / Jupiter](#JUnit--Jupiter)
+- [java <-> kotlin](#java---kotlin)
+- [Wrapper](#Wrapper)
+- [NodeJS](#NodeJS)
+- [docker](#docker)
+- [create sources.zip](#create-sources-zip)
+- [links and resources](#links-and-resources)
+
 - Travis CI status: [![Build Status](https://travis-ci.org/daggerok/spring-boot-gradle-kotlin-dsl-example.svg?branch=master)](https://travis-ci.org/daggerok/spring-boot-gradle-kotlin-dsl-example)
 - Documentation on [GitHub Pages](https://daggerok.github.io/spring-boot-gradle-kotlin-dsl-example/)
 - GitHub [daggerok/spring-boot-gradle-kotlin-dsl-example](https://github.com/daggerok/spring-boot-gradle-kotlin-dsl-example) repository 
