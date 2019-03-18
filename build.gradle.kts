@@ -9,9 +9,9 @@ plugins {
   id("com.moowork.node") version "1.2.0"
   id("org.jetbrains.kotlin.jvm") version "1.3.21"
   id("org.jetbrains.kotlin.plugin.spring") version "1.3.21"
-  id("org.springframework.boot") version "2.2.0.BUILD-SNAPSHOT"
   id("com.bmuschko.docker-remote-api").version("4.5.0").apply(false)
-  id("com.avast.gradle.docker-compose").version("0.8.14")//.apply(false)
+  id("com.avast.gradle.docker-compose").version("0.9.1")//.apply(false)
+  id("org.springframework.boot") version "2.2.0.M1"
 }
 
 group = "com.github.daggerok"
@@ -113,7 +113,7 @@ defaultTasks("build")
 node {
   download = true
   version = "10.9.0"
-  npmVersion = "6.8.0"
+  npmVersion = "6.9.0"
 }
 
 tasks.create("start")
