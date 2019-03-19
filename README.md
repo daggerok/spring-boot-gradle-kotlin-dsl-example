@@ -260,15 +260,18 @@ _build VuePress documentation_
 _docker-compose.yaml_
 
 ```yaml
-version: '3.7'
+version: "3.7"
 services:
-  busybox:
-    image: busybox
-    command: "echo Hello"
+  app:
+    image: openjdk:8u191-jdk-alpine3.9
+    volumes: ["./build/libs:/tmp/app"]
+    ports: ["8080:8080"]
+    networks: [app-network]
+    command: ash -c "java -jar /tmp/app/*.war"
     healthcheck:
       disable: true
 networks:
-  hello-net:
+  app-network:
     driver: bridge
 ```
 
