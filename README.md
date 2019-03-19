@@ -1,8 +1,10 @@
 # spring-boot + gradle-kotlin-dsl
 
+[[toc]]
+
+<!--
 ## Table of Content
 
-<!--ts-->
   * [Spring Boot](#Spring-Boot)
     * [plugins definition](#plugins-definition)
     * [dependencies](#dependencies)
@@ -17,7 +19,7 @@
   * [docker](#docker)
   * [create sources.zip](#create-sources-zip)
   * [links and resources](#links-and-resources)
-<!--ts-->
+-->
 
 - Travis CI status: [![Build Status](https://travis-ci.org/daggerok/spring-boot-gradle-kotlin-dsl-example.svg?branch=master)](https://travis-ci.org/daggerok/spring-boot-gradle-kotlin-dsl-example)
 - Documentation on [GitHub Pages](https://daggerok.github.io/spring-boot-gradle-kotlin-dsl-example/)
