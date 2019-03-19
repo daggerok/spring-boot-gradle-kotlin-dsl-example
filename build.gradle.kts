@@ -4,8 +4,10 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.bundling.BootWar
 
 plugins {
-  id("war")
-  id("idea")
+  war
+  idea
+  base
+  java
   id("com.moowork.node") version "1.2.0"
   id("org.jetbrains.kotlin.jvm") version "1.3.21"
   id("org.jetbrains.kotlin.plugin.spring") version "1.3.21"
@@ -37,7 +39,6 @@ java {
   targetCompatibility = javaVersion
 }
 
-/*
 sourceSets {
   main {
     java.srcDir("src/main/kotlin")
@@ -46,9 +47,10 @@ sourceSets {
     java.srcDir("src/test/kotlin")
   }
 }
-*/
+/*
 the<SourceSetContainer>()["main"].java.srcDir("src/main/kotlin")
 the<SourceSetContainer>()["test"].java.srcDir("src/test/kotlin")
+*/
 
 tasks.withType<KotlinCompile>().configureEach {
   kotlinOptions {
@@ -122,15 +124,18 @@ tasks["npm_start"].dependsOn("npm_i")
 tasks["build"].dependsOn("npm_run_build")
 tasks["npm_run_build"].dependsOn("npm_install")
 
-val busybox: Task = tasks.create<Exec>("busybox") {
+val dockerPs: Task = tasks.create<Exec>("dockerPs") {
+  dependsOn("assemble")
+  shouldRunAfter("assemble")
   executable = "docker"
-  args("ps", "-a", "-f", "name=spring-boot-gradle-kotlin-dsl-example")
+  args("ps", "-a", "-f", "name=${project.name}")
 }
 
 apply(plugin = "com.avast.gradle.docker-compose")
-
+tasks["composeUp"].dependsOn("assemble")
+tasks["composeUp"].shouldRunAfter("assemble")
 dockerCompose {
-  isRequiredBy(busybox)
+  isRequiredBy(dockerPs)
 }
 
 tasks {

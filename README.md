@@ -229,12 +229,14 @@ plugins {
 node {
   download = true
   version = "10.9.0"
-  npmVersion = "6.8.0"
+  npmVersion = "6.9.0"
 }
 
 tasks.create("start")
 tasks["start"].dependsOn("npm_start")
+tasks["npm_start"].dependsOn("npm_i")
 tasks["build"].dependsOn("npm_run_build")
+tasks["npm_run_build"].dependsOn("npm_install")
 ```
 
 _run 'npm start' by using gradle node plugin_
@@ -273,22 +275,26 @@ plugins {
   id("com.avast.gradle.docker-compose").version("0.8.14")//.apply(false)
 }
 
-val busybox: Task = tasks.create<Exec>("busybox") {
+val dockerPs: Task = tasks.create<Exec>("dockerPs") {
+  dependsOn("assemble")
+  shouldRunAfter("assemble")
   executable = "docker"
-  args("ps", "-a", "-f", "name=spring-boot-gradle-kotlin-dsl-example")
+  args("ps", "-a", "-f", "name=${project.name}")
 }
 
 apply(plugin = "com.avast.gradle.docker-compose")
 
 dockerCompose {
-  isRequiredBy(busybox)
+  isRequiredBy(dockerPs)
 }
 ```
 
 _run and test_
 
 ```bash
-./gradlew busybox
+./gradlew composeUp
+http :8080/actuator
+./gradlew composeDown
 ```
 
 ## create sources.zip
