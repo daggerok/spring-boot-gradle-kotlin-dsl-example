@@ -11,11 +11,12 @@ plugins {
   java
   kotlin("jvm") version "1.3.21"
   kotlin("plugin.spring") version "1.3.21"
+  id("io.franzbecker.gradle-lombok") version "2.1"
   id("io.spring.dependency-management") version "1.0.7.RELEASE"
   id("org.springframework.boot") version "2.2.0.BUILD-SNAPSHOT"
   id("com.avast.gradle.docker-compose").version("0.9.1")
   id("com.github.ben-manes.versions") version "0.21.0"
-  id("com.moowork.node") version "1.2.0"
+  id("com.moowork.node") version "1.3.1"
 }
 
 allprojects {
@@ -57,6 +58,11 @@ sourceSets {
   test {
     java.srcDir("src/test/kotlin")
   }
+}
+
+lombok {
+  val lombokVersion: String by project
+  version = lombokVersion
 }
 
 /*
