@@ -139,14 +139,13 @@ tasks["build"].dependsOn("npm_run_build")
 tasks["npm_run_build"].dependsOn("npm_install")
 
 val dockerPs: Task = tasks.create<Exec>("dockerPs") {
-  dependsOn("assemble")
-  shouldRunAfter("assemble")
+  shouldRunAfter("clean", "assemble")
   executable = "docker"
   args("ps", "-a", "-f", "name=${project.name}")
 }
 
 tasks["composeUp"].dependsOn("assemble")
-tasks["composeUp"].shouldRunAfter("assemble")
+tasks["composeUp"].shouldRunAfter("clean", "assemble")
 dockerCompose {
   isRequiredBy(dockerPs)
 }
