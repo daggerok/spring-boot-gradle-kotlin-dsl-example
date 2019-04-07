@@ -1,3 +1,4 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 import org.springframework.boot.gradle.tasks.bundling.BootJar
@@ -8,30 +9,40 @@ plugins {
   idea
   base
   java
+  kotlin("jvm") version "1.3.21"
+  kotlin("plugin.spring") version "1.3.21"
+  id("io.spring.dependency-management") version "1.0.7.RELEASE"
+  id("org.springframework.boot") version "2.2.0.BUILD-SNAPSHOT"
+  id("com.avast.gradle.docker-compose").version("0.9.1")
+  id("com.github.ben-manes.versions") version "0.21.0"
   id("com.moowork.node") version "1.2.0"
-  id("org.jetbrains.kotlin.jvm") version "1.3.21"
-  id("org.jetbrains.kotlin.plugin.spring") version "1.3.21"
-  id("com.bmuschko.docker-remote-api").version("4.5.0").apply(false)
-  id("com.avast.gradle.docker-compose").version("0.9.1")//.apply(false)
-  id("org.springframework.boot") version "2.2.0.M1"
 }
 
-group = "com.github.daggerok"
-version = "1.0.0-SNAPSHOT"
+allprojects {
+  val projectGroup: String by project
+  val projectVersion: String by project
+  group = projectGroup
+  version = projectVersion
+}
 
-val gradleVersion = "5.2.1"
-val kotlinVersion = "1.3.21"
-val junitJupiterVersion = "5.4.0"
-val javaVersion = JavaVersion.VERSION_1_8
-
+val kotlinVersion: String by project
+val junitJupiterVersion: String by project
 extra["kotlin.version"] = kotlinVersion
 extra["junit-jupiter.version"] = junitJupiterVersion
 
-apply(plugin = "io.spring.dependency-management")
-
 tasks.withType<Wrapper>().configureEach {
-  gradleVersion = gradleVersion
+  val gradleWrapperVersion: String by project
+  gradleVersion = gradleWrapperVersion
   distributionType = Wrapper.DistributionType.BIN
+}
+
+val javaVersion = JavaVersion.VERSION_1_8
+
+tasks.withType<KotlinCompile>().configureEach {
+  kotlinOptions {
+    freeCompilerArgs += "-Xjsr305=strict"
+    jvmTarget = "$javaVersion"
+  }
 }
 
 java {
@@ -47,22 +58,23 @@ sourceSets {
     java.srcDir("src/test/kotlin")
   }
 }
+
 /*
 the<SourceSetContainer>()["main"].java.srcDir("src/main/kotlin")
 the<SourceSetContainer>()["test"].java.srcDir("src/test/kotlin")
 */
 
-tasks.withType<KotlinCompile>().configureEach {
-  kotlinOptions {
-    freeCompilerArgs += "-Xjsr305=strict"
-    jvmTarget = "$javaVersion"
-  }
-}
-
 repositories {
   mavenCentral()
   maven(url = "https://repo.spring.io/snapshot")
   maven(url = "https://repo.spring.io/milestone")
+}
+
+dependencyManagement {
+  imports {
+    val springBootVersion: String by project
+    mavenBom("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+  }
 }
 
 dependencies {
@@ -71,9 +83,9 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-actuator")
   //implementation("org.springframework.boot:spring-boot-starter-web") // tomcat
   implementation("org.springframework.boot:spring-boot-starter")
-  implementation("org.jetbrains.kotlin:kotlin-reflect")
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+  implementation(kotlin("stdlib-jdk8"))
+  implementation(kotlin("reflect"))
 
   annotationProcessor("org.projectlombok:lombok")
   testAnnotationProcessor("org.projectlombok:lombok")
@@ -113,9 +125,11 @@ tasks.withType<Test> {
 defaultTasks("build")
 
 node {
+  val targetNodeVersion: String by project
+  val targetNpmVersion: String by project
   download = true
-  version = "10.9.0"
-  npmVersion = "6.9.0"
+  version = targetNodeVersion
+  npmVersion = targetNpmVersion
 }
 
 tasks.create("start")
@@ -131,35 +145,64 @@ val dockerPs: Task = tasks.create<Exec>("dockerPs") {
   args("ps", "-a", "-f", "name=${project.name}")
 }
 
-apply(plugin = "com.avast.gradle.docker-compose")
 tasks["composeUp"].dependsOn("assemble")
 tasks["composeUp"].shouldRunAfter("assemble")
 dockerCompose {
   isRequiredBy(dockerPs)
 }
 
+// gradle dependencyUpdates -Drevision=release --parallel
+tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
+  resolutionStrategy {
+    componentSelection {
+      all {
+        val rejected = listOf("alpha", "beta", "rc", "cr", "m", "preview", "b", "ea", "SNAPSHOT")
+            .map { qualifier -> Regex("(?i).*[.-]$qualifier[.\\d-+]*") }
+            .any { it.matches(candidate.version) }
+        if (rejected) reject("Release candidate")
+      }
+    }
+  }
+  //// optionals:
+  // checkForGradleUpdate = true
+  // outputFormatter = "plain" // "json" // "xml"
+  // outputDir = "build/dependencyUpdates"
+  // reportfileName = "report"
+}
+
 tasks {
   getByName("clean") {
     doLast {
-      delete(project.buildDir)
+      delete(
+          project.buildDir,
+          "${project.projectDir}/.vuepress/dist"
+      )
     }
   }
 }
 
 tasks.create<Zip>("sources") {
+  group = "Archive"
+  description = "Archives sources in a zip archive"
   dependsOn("clean")
   shouldRunAfter("clean")
-  description = "Archives sources in a zip file"
-  group = "Archive"
-  from("src") {
-    into("src")
-  }
-  from("build.gradle.kts")
-  from("settings.gradle.kts")
   from(".vuepress") {
     into(".vuepress")
   }
-  from("README.md")
-  from("package.json")
+  from("src") {
+    into("src")
+  }
+  from(
+      ".gitignore",
+      ".travis.yml",
+      "build.gradle.kts",
+      "docker-compose.yaml",
+      "gradle.properties",
+      "LICENSE",
+      "package.json",
+      "package-lock.json",
+      "README.md",
+      "settings.gradle.kts"
+  )
   archiveFileName.set("${project.buildDir}/sources-${project.version}.zip")
 }

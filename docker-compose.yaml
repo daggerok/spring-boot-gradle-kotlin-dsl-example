@@ -1,11 +1,11 @@
-version: "3.7"
+version: '3.7'
 services:
   app:
-    image: openjdk:8u191-jdk-alpine3.9
-    volumes: ["./build/libs:/tmp/app"]
-    ports: ["8080:8080"]
+    image: openjdk:8u201-jre-alpine3.9
+    volumes: ['./build/libs:/tmp/app']
+    ports: ['8080:8080']
     networks: [app-network]
-    command: ash -c "java -jar /tmp/app/*.war"
+    command: ash -c 'java -jar /tmp/app/*.war'
     healthcheck:
       disable: true
 networks:

@@ -10,5 +10,5 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 class `JUnit 5 Tests` {
 
-  @Test fun contextLoads() {}
+  @Test fun test() {}
 }
