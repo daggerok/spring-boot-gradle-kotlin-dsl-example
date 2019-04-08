@@ -1,7 +1,7 @@
 {
   "name": "docs",
   "version": "1.0.1-SNAPSHOT",
-  "description": "`Spring Boot Gradle Kotlin DSL",
+  "description": "Spring Boot Gradle Kotlin DSL",
   "main": "index.js",
   "scripts": {
     "start": "vuepress dev",
